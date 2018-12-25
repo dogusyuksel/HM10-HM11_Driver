@@ -1,5 +1,5 @@
 # HM10-HM11_Driver
-This is a sketch to drive HM10/HM11 with AT commands
+This is a sketch to drive HM10/HM11 with AT commands. Body of the sketch is to search iBeacons around.
 
 
 These are functions and their explanations to for AT Commands;
