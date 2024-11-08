@@ -1,10 +1,12 @@
 
+import argparse
+import codecs
+import select
 import sys
 import time
-import codecs
+
 import serial
-import select
-import argparse
+
 import utils
 
 VERSION = "0.0.1"
@@ -90,9 +92,22 @@ print('EXECUTED:    enabled uart wakeup')
 response=execute_string_command(serial_handle, 'AT+UART0', 8)
 
 if args.power is None or args.power.__contains__('wakeup'):
-    # you can send a long string (Length > 1024 or more), that string can caused module wake up, and you will be received “OK+WAKE” string from module UART
+    # you can send a long string (Length > 1024 or more),
+    # that string can caused module wake up, and you will be received “OK+WAKE” string from module UART
     print('EXECUTED:    wake up from sleep')
-    execute_string_command(serial_handle, 'I am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron man', 7)
+    execute_string_command(serial_handle, 'I am iron man, I am iron man, I am iron man I am iron man, \
+    I am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron \
+    man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron \
+    man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, \
+    I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron mann \
+    I am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man \
+    I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, I am iron man, \
+    I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, I am iron man, \
+    I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man I am iron man, \
+    I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, I am iron man \
+    I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, I am iron man, \
+    I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron manI am iron man, \
+    I am iron man, I am iron man I am iron man, I am iron man, I am iron man, I am iron man I am iron man', 7)
 else:
     print('EXECUTED:    going into sleep')
     execute_string_command(serial_handle, 'AT+SLEEP', 8)
