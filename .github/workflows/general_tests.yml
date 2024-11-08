@@ -42,7 +42,7 @@ jobs:
 
     - name: pytest
       run: |
-         ./docker/run_docker.sh ${{ secrets.DOCKER_REPO }}:master "cd /workspace/extended-grep && pytest"
+         ./docker/run_docker.sh ${{ secrets.DOCKER_REPO }}:master "cd /workspace && pytest"
 
     - name: flake8
       run: |
