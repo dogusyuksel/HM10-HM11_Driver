@@ -1,3 +1,10 @@
+# Schematic
+
+![HM10](./docs/hm10Schm.JPG "HM10")
+
+
+# Usage
+
 python3 hm10_hm11_ctl.py -h
 ```
 usage: hm10_hm11_ctl [-h] [-v] [-d] [-i INTERFACE] [-r ROLE] [-p POWER] [-e] [-c CUSTOMCOMMAND] [-m SETMAC] [-a SETADV] [-w SETWHITEMAC] [-l LISTNUMBER] [-b] [-n NAME] [-x CONNECTMAC]
@@ -31,3 +38,21 @@ optional arguments:
 
 hm10_hm11_ctl Help
 ```
+
+# How to Use
+
+1. Run as Peripheral
+
+```
+python3 hm10_hm11_ctl.py -i <interface: eg /dev/ttyACM0>
+```
+
+2. Run as Central
+
+```
+python3 hm10_hm11_ctl.py -i <interface: eg /dev/ttyACM0> -r central
+```
+
+# Notes
+
+[More on commands](./docs/HM-10_11_datasheet.pdf)

@@ -61,22 +61,26 @@ parser.add_argument('-x', '--connectmac',
                     help='type mac to be connected, max len 12')
 args = parser.parse_args()
 
+
 def serial_open(port, wait_time):
-    ser = serial.Serial(port, 9600, timeout=wait_time) # open serial port
+    ser = serial.Serial(port, 9600, timeout=wait_time)  # open serial port
     return ser
 
+
 def serial_close(ser):
-    ser.close() # close port
+    ser.close()  # close port
     return ser
+
 
 def execute_string_command(ser, command, lenght):
     command_b = bytes(command, 'utf-8')
-    ser.write(command_b) # write a string
-    response = ser.read(lenght) # read up to lenght bytes (timeout)
+    ser.write(command_b)  # write a string
+    response = ser.read(lenght)  # read up to lenght bytes (timeout)
     response = codecs.decode(response, encoding='utf-8')
     if args.verbose is True:
         print('RESPONSE:   ', response)
     return response
+
 
 if args.version is True:
     print('version', VERSION)
@@ -89,7 +93,7 @@ if u.arg_check() is False:
 serial_handle = serial_open(args.interface, 10)
 
 print('EXECUTED:    enabled uart wakeup')
-response=execute_string_command(serial_handle, 'AT+UART0', 8)
+response = execute_string_command(serial_handle, 'AT+UART0', 8)
 
 if args.power is None or args.power.__contains__('wakeup'):
     # you can send a long string (Length > 1024 or more),
@@ -115,7 +119,7 @@ else:
     exit(0)
 
 print('EXECUTED:    query software version')
-response=execute_string_command(serial_handle, 'AT+VERR?', 20)
+response = execute_string_command(serial_handle, 'AT+VERR?', 20)
 print('INFO:        version ', response)
 
 # use AT+BAUD[P1]  to set it where P1 is
@@ -124,7 +128,7 @@ print('INFO:        version ', response)
 # 6: 2400; 7: 1200; 8: 230400;
 # Default: 0(9600)
 print('EXECUTED:    query baud rate')
-response=execute_string_command(serial_handle, 'AT+BAUD?', 13)
+response = execute_string_command(serial_handle, 'AT+BAUD?', 13)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        baud 9600')
@@ -146,7 +150,7 @@ elif interval[1].__contains__('8'):
     print('INFO:        baud 230400')
 
 print('EXECUTED:    get stop bit')
-response=execute_string_command(serial_handle, 'AT+STOP?', 8)
+response = execute_string_command(serial_handle, 'AT+STOP?', 8)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        stop bit 1')
@@ -154,7 +158,7 @@ elif interval[1].__contains__('1'):
     print('INFO:        stop bit 2')
 
 print('EXECUTED:    get parity')
-response=execute_string_command(serial_handle, 'AT+PARI?', 8)
+response = execute_string_command(serial_handle, 'AT+PARI?', 8)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        parity NONE')
@@ -165,17 +169,17 @@ elif interval[1].__contains__('2'):
 
 # use this command AT+UUID[P1] to set it where P1: 0x0001~0xFFFE
 print('EXECUTED:    get UUID')
-response=execute_string_command(serial_handle, 'AT+UUID?', 13)
+response = execute_string_command(serial_handle, 'AT+UUID?', 13)
 interval = response.split(":")
 print('INFO:        UUID ', interval[1])
 
 print('EXECUTED:    get temperature')
-response=execute_string_command(serial_handle, 'AT+TEMP?', 14)
+response = execute_string_command(serial_handle, 'AT+TEMP?', 14)
 interval = response.split(":")
 print('INFO:        temperature ', interval[1])
 
 print('EXECUTED:    get last connected device mac')
-response=execute_string_command(serial_handle, 'AT+RADD?', 20)
+response = execute_string_command(serial_handle, 'AT+RADD?', 20)
 interval = response.split(":")
 print('INFO:        last device mac ', interval[1])
 
@@ -184,26 +188,26 @@ print('INFO:        last device mac ', interval[1])
 # 1: Auth not need PIN
 # 2: Auth with PIN
 # 3: Auth and bonded
-# Default: 0 
+# Default: 0
 print('EXECUTED:    set bond mode for no PIN')
-response=execute_string_command(serial_handle, 'AT+TYPE0', 8)
+response = execute_string_command(serial_handle, 'AT+TYPE0', 8)
 
 print('EXECUTED:    set for reliable advertise')
-response=execute_string_command(serial_handle, 'AT+RELI1', 8)
+response = execute_string_command(serial_handle, 'AT+RELI1', 8)
 
 print('EXECUTED:    do not auto sleep')
-response=execute_string_command(serial_handle, 'AT+PWRM1', 8)
+response = execute_string_command(serial_handle, 'AT+PWRM1', 8)
 
 print('EXECUTED:    maximize power (6 dbm)')
-response=execute_string_command(serial_handle, 'AT+POWE3', 8)
-response=execute_string_command(serial_handle, 'AT+PCTL1', 8)
+response = execute_string_command(serial_handle, 'AT+POWE3', 8)
+response = execute_string_command(serial_handle, 'AT+PCTL1', 8)
 
 print('EXECUTED:    open rx gain')
-response=execute_string_command(serial_handle, 'AT+GAIN1', 8)
+response = execute_string_command(serial_handle, 'AT+GAIN1', 8)
 
 print('EXECUTED:    enable notify information with address')
-response=execute_string_command(serial_handle, 'AT+NOTI1', 8)
-response=execute_string_command(serial_handle, 'AT+NOTP1', 8)
+response = execute_string_command(serial_handle, 'AT+NOTI1', 8)
+response = execute_string_command(serial_handle, 'AT+NOTP1', 8)
 
 if args.name is not None:
     if len(args.name) > 12:
@@ -215,12 +219,12 @@ if args.name is not None:
     execute_string_command(serial_handle, concat_command, 18)
 
 print('EXECUTED:    query name')
-response=execute_string_command(serial_handle, 'AT+NAME?', 18)
+response = execute_string_command(serial_handle, 'AT+NAME?', 18)
 print('INFO:        name: ', response[8:])
 
 # 1 will turn it on
 print('EXECUTED:    turn off ibeacon')
-response=execute_string_command(serial_handle, 'AT+IBEA0', 8)
+response = execute_string_command(serial_handle, 'AT+IBEA0', 8)
 
 if args.role is None or args.role.__contains__('peripheral'):
     # AT+ROLE0” is peripheral role
@@ -238,7 +242,7 @@ else:
 # a device address, then module will try scan devices and try connect them. AT+SAVE
 # command will let module know if save devices address or not.
 
-# For peripheral: If AT+IMME0 is setup module will auto into discoverable mode. 
+# For peripheral: If AT+IMME0 is setup module will auto into discoverable mode.
 
 # With IMME1: the device will be in AT configuration mode
 # If the mode is central, In AT+IMME1 modem, when power on, module do nothing, module will wait your
@@ -273,7 +277,7 @@ if args.customcommand is not None:
 # 1) Send and receive Bluetooth data through UART.
 # 2) Remote device could configure module parameters with AT Commands
 # 3) Remote device could control PIO2~11 output low or high
-# HM-11 only has PIO2 and PIO3. 
+# HM-11 only has PIO2 and PIO3.
 if args.remotecontrol is True:
     print('EXECUTED:    remote control mode selected')
     execute_string_command(serial_handle, 'AT+MODE2', 8)
@@ -295,9 +299,9 @@ execute_string_command(serial_handle, 'AT+ADTY0', 8)
 # If module is in sleep mode, module will output “OK+WAKE” and into standby mode.
 # If Module is not connected to remote device, you will receive: “OK”
 # If Module is connected, module will be disconnected from remote device, if “AT +
-# NOTI” is setup to 1, module will output “OK+LOST” through UART. 
+# NOTI” is setup to 1, module will output “OK+LOST” through UART.
 print('EXECUTED:    test')
-response=execute_string_command(serial_handle, 'AT', 7)
+response = execute_string_command(serial_handle, 'AT', 7)
 if response.__contains__('OK+LOST'):
     print('INFO:        disconnected and ready')
 elif response.__contains__('OK+WAKE'):
@@ -316,7 +320,7 @@ if args.setmac is not None:
 
 # receive format "OK+ADDR:MAC Address"
 print('EXECUTED:    address query')
-response=execute_string_command(serial_handle, 'AT+ADDR?', 20)
+response = execute_string_command(serial_handle, 'AT+ADDR?', 20)
 mac = response.split(":")
 print('INFO:        MAC: ', mac[1])
 
@@ -361,7 +365,7 @@ if args.setadv is not None:
     execute_string_command(serial_handle, concat_command, 8)
 
 print('EXECUTED:    advertising interval query')
-response=execute_string_command(serial_handle, 'AT+ADVI?', 8)
+response = execute_string_command(serial_handle, 'AT+ADVI?', 8)
 interval = response.split(":")
 print('INFO:        interval: ', interval[1])
 
@@ -383,11 +387,11 @@ if args.setwhitemac is not None:
     execute_string_command(serial_handle, concat_command, 19)
 
 print('EXECUTED:    query white lists')
-response=execute_string_command(serial_handle, 'AT+AD1??', 20)
+response = execute_string_command(serial_handle, 'AT+AD1??', 20)
 print('INFO:        list 1: ', response)
-response=execute_string_command(serial_handle, 'AT+AD2??', 20)
+response = execute_string_command(serial_handle, 'AT+AD2??', 20)
 print('INFO:        list 2: ', response)
-response=execute_string_command(serial_handle, 'AT+AD3??', 20)
+response = execute_string_command(serial_handle, 'AT+AD3??', 20)
 print('INFO:        list 3: ', response)
 
 if args.battmonitor is True:
@@ -399,12 +403,12 @@ else:
     execute_string_command(serial_handle, 'AT+BATC0', 8)
 
 print('EXECUTED:    query battery monitor')
-response=execute_string_command(serial_handle, 'AT+BATC?', 8)
+response = execute_string_command(serial_handle, 'AT+BATC?', 8)
 interval = response.split(":")
 print('INFO:        enabled: ', interval[1])
 
 print('EXECUTED:    query battery level')
-response=execute_string_command(serial_handle, 'AT+BATT?', 10)
+response = execute_string_command(serial_handle, 'AT+BATT?', 10)
 interval = response.split(":")
 print('INFO:        battery %', interval[1])
 
@@ -416,7 +420,7 @@ print('INFO:        battery %', interval[1])
 # 9: 4000ms;
 # Default: 3(20ms)
 print('EXECUTED:    query min Link Layer Connection Interval')
-response=execute_string_command(serial_handle, 'AT+COMI?', 8)
+response = execute_string_command(serial_handle, 'AT+COMI?', 8)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        interval 7.5ms')
@@ -447,7 +451,7 @@ elif interval[1].__contains__('9'):
 # 9: 4000ms;
 # Default: 7(40ms)
 print('EXECUTED:    query max Link Layer Connection Interval')
-response=execute_string_command(serial_handle, 'AT+COMA?', 8)
+response = execute_string_command(serial_handle, 'AT+COMA?', 8)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        interval 7.5ms')
@@ -471,7 +475,7 @@ elif interval[1].__contains__('9'):
     print('INFO:        interval 4000ms')
 
 print('EXECUTED:    query supervision timeout')
-response=execute_string_command(serial_handle, 'AT+COSU?', 8)
+response = execute_string_command(serial_handle, 'AT+COSU?', 8)
 interval = response.split(":")
 if interval[1].__contains__('0'):
     print('INFO:        100ms')
@@ -489,7 +493,7 @@ elif interval[1].__contains__('6'):
     print('INFO:        6000ms')
 
 print('EXECUTED:    query  Link Layer connection slave latency')
-response=execute_string_command(serial_handle, 'AT+COLA?', 8)
+response = execute_string_command(serial_handle, 'AT+COLA?', 8)
 interval = response.split(":")
 print('INFO:        latency ', interval[1])
 
@@ -499,30 +503,30 @@ if args.role is not None and args.role.__contains__('central'):
 
     # where P1 value: 000000~999999
     print('EXECUTED:    connect forever')
-    response=execute_string_command(serial_handle, 'AT+TCON000000', 13)
+    response = execute_string_command(serial_handle, 'AT+TCON000000', 13)
 
     # 0: none, 1: only name, 2: only RSSI
     print('EXECUTED:    show RSSI and Name at DISC result')
-    response=execute_string_command(serial_handle, 'AT+SHOW3', 8)
+    response = execute_string_command(serial_handle, 'AT+SHOW3', 8)
 
     # P1: 1 ~ 9  in seconds
     print('EXECUTED:    set module discovery time')
-    response=execute_string_command(serial_handle, 'AT+SCAN9', 8)
+    response = execute_string_command(serial_handle, 'AT+SCAN9', 8)
 
     # 0 means save
     print('EXECUTED:    do not save connected device mac address')
-    response=execute_string_command(serial_handle, 'AT+SAVE1', 8)
+    response = execute_string_command(serial_handle, 'AT+SAVE1', 8)
 
     # 0 means save
     print('EXECUTED:    Clear Last Connected device address')
-    response=execute_string_command(serial_handle, 'AT+CLEAR', 8)
+    response = execute_string_command(serial_handle, 'AT+CLEAR', 8)
 
     # start central here
     execute_string_command(serial_handle, 'AT+START', 8)
     print('EXECUTED:    START executed')
 
     print('EXECUTED:    Start a device discovery scan')
-    response=execute_string_command(serial_handle, 'AT+DISC?', 5000)
+    response = execute_string_command(serial_handle, 'AT+DISC?', 5000)
     print('INFO:        response', response)
 
     if args.connectmac is not None:
@@ -532,12 +536,12 @@ if args.role is not None and args.role.__contains__('central'):
             exit(0)
         concat_command = "AT+CON" + args.connectmac
         print('EXECUTED:    setting mac command: ', concat_command)
-        response=execute_string_command(serial_handle, concat_command, 32)
+        response = execute_string_command(serial_handle, concat_command, 32)
         if response.__contains__('OK+CONNA'):
             print('INFO:        Accept request, connecting')
             time.sleep(5)
             print('EXECUTED:    get RSSI')
-            response=execute_string_command(serial_handle, 'AT+RSSI?', 20)
+            response = execute_string_command(serial_handle, 'AT+RSSI?', 20)
             print('INFO:        RSSI', response)
         if response.__contains__('OK+CONNE'):
             print('INFO:        Connect error')
@@ -548,20 +552,23 @@ else:
     execute_string_command(serial_handle, 'AT+START', 8)
     print('EXECUTED:    START executed')
 
-
 serial_close(serial_handle)
+
 serial_handle = serial_open(args.interface, 1)
 
 print('INFO:        start listening...')
+
 
 def inp_ready(line):
     user_inp_b = bytes(line, 'utf-8')
     serial_handle.write(user_inp_b)
 
+
 def check_serial():
     response = serial_handle.read(1)
     response = codecs.decode(response, encoding='utf-8')
     return response
+
 
 t = time.time()
 last_packet_get_time = int(t * 1000)
@@ -580,8 +587,6 @@ while condition is True:
 
     resp = check_serial()
     if resp:
-#        print(resp)
-        # update time
         t = time.time()
         last_packet_get_time = int(t * 1000)
         cumulative_packet_content = cumulative_packet_content + resp
