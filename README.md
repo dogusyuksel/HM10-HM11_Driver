@@ -50,7 +50,7 @@ python3 hm10_hm11_ctl.py -i <interface: eg /dev/ttyACM0>
 2. Run as Central
 
 ```
-python3 hm10_hm11_ctl.py -i <interface: eg /dev/ttyACM0> -r central
+python3 hm10_hm11_ctl.py -i <interface: eg /dev/ttyACM0> -r central -x <mac, eg: 546C0EA04925>
 ```
 
 # Notes
